@@ -17,6 +17,7 @@ func migrateDevices(r *sqls.SQLiteClient) error {
 	CREATE TABLE IF NOT EXISTS devices(
 		Id INTEGER PRIMARY KEY AUTOINCREMENT,
         
+		NoOfWheels INTEGER NOT NULL,
 		Name TEXT NOT NULL,
 		Type TEXT NOT NULL,
         CONSTRAINT id_unique_key UNIQUE (Id)
@@ -41,8 +42,8 @@ func NewDeviceDao() (*DeviceDao, error) {
 }
 
 func (deviceDao *DeviceDao) CreateDevice(m *models.Device) (*models.Device, error) {
-	insertQuery := "INSERT INTO devices(Name, Type)values(?, ?)"
-	res, err := deviceDao.sqlClient.DB.Exec(insertQuery, m.Name, m.Type)
+	insertQuery := "INSERT INTO devices(NoOfWheels, Name, Type)values(?, ?, ?)"
+	res, err := deviceDao.sqlClient.DB.Exec(insertQuery, m.NoOfWheels, m.Name, m.Type)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +69,7 @@ func (deviceDao *DeviceDao) ListDevices() ([]*models.Device, error) {
 	var devices []*models.Device
 	for rows.Next() {
 		m := models.Device{}
-		if err = rows.Scan(&m.Id, &m.Name, &m.Type); err != nil {
+		if err = rows.Scan(&m.Id, &m.NoOfWheels, &m.Name, &m.Type); err != nil {
 			return nil, err
 		}
 		devices = append(devices, &m)
@@ -85,7 +86,7 @@ func (deviceDao *DeviceDao) GetDevice(id int64) (*models.Device, error) {
 	selectQuery := "SELECT * FROM devices WHERE Id = ?"
 	row := deviceDao.sqlClient.DB.QueryRow(selectQuery, id)
 	m := models.Device{}
-	if err := row.Scan(&m.Id, &m.Name, &m.Type); err != nil {
+	if err := row.Scan(&m.Id, &m.NoOfWheels, &m.Name, &m.Type); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, sqls.ErrNotExists
 		}
@@ -112,8 +113,8 @@ func (deviceDao *DeviceDao) UpdateDevice(id int64, m *models.Device) (*models.De
 		return nil, sql.ErrNoRows
 	}
 
-	updateQuery := "UPDATE devices SET Name = ?, Type = ? WHERE Id = ?"
-	res, err := deviceDao.sqlClient.DB.Exec(updateQuery, m.Name, m.Type, id)
+	updateQuery := "UPDATE devices SET NoOfWheels = ?, Name = ?, Type = ? WHERE Id = ?"
+	res, err := deviceDao.sqlClient.DB.Exec(updateQuery, m.NoOfWheels, m.Name, m.Type, id)
 	if err != nil {
 		return nil, err
 	}
