@@ -2,49 +2,49 @@
 
 
 
-# Curl commands for REST Server resource Device
+# Curl commands for REST Server resource User
 
 # Post
 ```
 curl -X POST -H "Content-Type: application/json" \
--d '{"Name": "sample string","Type": "sample string","NoOfWheels": 1}' \
-http://localhost:3500/v1/devices
+-d '{"Name": "sample string"}' \
+http://localhost:4500/v1/users
 ```
 
 
 # Get
 ```
 curl -X GET -H "Content-Type: application/json" \
-http://localhost:3500/v1/devices
+http://localhost:4500/v1/users
 ```
 
 
 # Put
 ```
 curl -X PUT -H "Content-Type: application/json" \
--d '{"Id": 123,"Name": "sample string","Type": "sample string","NoOfWheels": 1}' \
-http://localhost:3500/v1/devices/123
+-d '{"Id": 123,"Name": "sample string"}' \
+http://localhost:4500/v1/users/123
 ```
 # Put
 ### wrong id passed in param
 ```
 curl -X PUT -H "Content-Type: application/json" \
--d '{"Id": 123,"Name": "sample string","Type": "sample string","NoOfWheels": 1}' \
-http://localhost:3500/v1/devices/1234
+-d '{"Id": 123,"Name": "sample string"}' \
+http://localhost:4500/v1/users/1234
 ```
 
 
-# Get  (retrieve specific Device)
+# Get  (retrieve specific User)
 ```
 curl -X GET -H "Content-Type: application/json" \
-http://localhost:3500/v1/devices/123
+http://localhost:4500/v1/users/123
 ```
 
 
 # Delete
 ```
 curl -X DELETE -H "Content-Type: application/json" \
-http://localhost:3500/v1/devices/123
+http://localhost:4500/v1/users/123
 ```
 
 
