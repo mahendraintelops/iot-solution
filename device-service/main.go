@@ -11,6 +11,8 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"os"
+
+	"github.com/mahendraintelops/iot-solution/device-service/pkg/rest/client"
 )
 
 var (
@@ -68,6 +70,18 @@ func main() {
 		log.Errorf("error occurred: %v", err)
 		os.Exit(1)
 	}
+
+	// this will not be called as the control won't reach here.
+	// call external services here if the HasRestClients value is true
+	// (that means this repo is a client to external service(s)
+	var err0 error
+
+	bNodeEc, err0 := client.ExecuteNodeEc()
+	if err0 != nil {
+		log.Printf("error occurred: %v", err0)
+		return
+	}
+	log.Printf("response received: %s", string(bNodeEc))
 
 }
 
